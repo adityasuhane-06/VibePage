@@ -68,7 +68,8 @@ const UserAuthForm = () => {
      e.preventDefault();
     
     if (validateForm()) {
-      toast.loading('Creating account...');
+    const load=  toast.loading('Creating account...');
+    setIsLoading(true);
       
    
     const { fullname, email, password, confirmPassword } = formData;
@@ -81,10 +82,12 @@ const UserAuthForm = () => {
     }).then((response) => {
       console.log(response.data);
       localStorage.setItem('user', JSON.stringify(response.data));
+      toast.dismiss(load);
+      toast.success('Account created successfully!');
 
 
       setIsLoading(false);
-      toast.success('Account created successfully!');
+     
       setFormData({
         fullname: '',
         email: '',

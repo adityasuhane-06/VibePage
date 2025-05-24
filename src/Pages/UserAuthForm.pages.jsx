@@ -68,7 +68,7 @@ const UserAuthForm = () => {
      e.preventDefault();
     
     if (validateForm()) {
-    const load=  toast.loading('Creating account...');
+    const load=  toast.loading('Creating your account...');
     setIsLoading(true);
       
    

@@ -66,8 +66,9 @@ const UserAuthForm = () => {
 
   const handleSubmit=(e)=>{
      e.preventDefault();
-    setIsLoading(true);
+    
     if (validateForm()) {
+      toast.loading('Creating account...');
       
    
     const { fullname, email, password, confirmPassword } = formData;

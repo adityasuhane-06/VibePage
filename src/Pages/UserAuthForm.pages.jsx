@@ -68,7 +68,7 @@ const UserAuthForm = () => {
      e.preventDefault();
     setIsLoading(true);
     if (validateForm()) {
-      setIsLoading(false);
+      
    
     const { fullname, email, password, confirmPassword } = formData;
     const newErrors = {};
@@ -83,7 +83,7 @@ const UserAuthForm = () => {
 
 
       setIsLoading(false);
-      alert("Account created successfully");
+      toast.success('Account created successfully!');
       setFormData({
         fullname: '',
         email: '',

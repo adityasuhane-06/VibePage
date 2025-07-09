@@ -5,30 +5,49 @@ import { useEffect, useState } from "react"
 import InPageNaviagtion from "../component/InpageNavigation.jsx"
 import Loading from "../common/Loading.jsx"
 import BlogPostCard from "../component/blog-post-component.jsx"
+import MinimalBlogPost from "../component/minimalBlogPost.jsx"
 
+import { IoMdTrendingUp } from "react-icons/io";
 const HomePage = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  let [blogs, setBlogs] = useState([]);
+  let [loading, setLoading] = useState(true);
+  let [trendingBlogs, setTrendingBlogs] = useState([]);
+  let categories = ["Technology","AI","Python","Large language Model","Machine Learning","Finance","Nueral Network", "Health", "Lifestyle", "Travel", "Food", "Education", "Finance", "Entertainment", "Sports", "Science", "Politics", "Environment", "Fashion", "Art", "History", "Culture", "Gaming", "Music", "Books", "Photography"];
+
+
+
+  const fetchLatestBlogs = async (signal) => {
+    try {
+      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}api/latest-blogs`, { signal });
+      console.log(data.blogs);
+      setBlogs(data.blogs);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching latest blogs:", err);
+      setLoading(false);
+    }
+  };
+  const fetchTrendingBlogs = async (signal) => {
+    try {
+      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}api/trending-blogs`, { signal });
+      console.log( "Trending blog ",data.blogs);
+      setTrendingBlogs(data.blogs);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching trending blogs:", err);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const Controller= new AbortController();
-    axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}api/latest-blogs`,{ signal: Controller.signal })
-      .then(({ data }) => {
-        console.log(data.blogs);
-        setBlogs(data.blogs);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching latest blogs:", err);
-        setLoading(false);
-      });
-      return ()=>{
-    Controller.abort();// abort the request if component unmounts
+    const Controller = new AbortController();
+    fetchLatestBlogs(Controller.signal);
+    fetchTrendingBlogs(Controller.signal);
 
-  }
-  },
-  
-   []);
+    return () => {
+      Controller.abort(); // abort the request if component unmounts
+    };
+  }, []);
 
   return (
     <AnimationWrapper>
@@ -54,7 +73,21 @@ const HomePage = () => {
                   
                 }
                 </>
-                <h1> Trending Blogs here </h1>
+                {/* this is the latest blog section  */}
+              <>
+                {
+                 trendingBlogs===null ? <Loading/> :
+                 trendingBlogs.map((blog,index)=>{
+                  return <AnimationWrapper transition={{duartion:1,delay:index*0.1}} key={index}>
+                    <MinimalBlogPost content={blog} author={blog.author.personal_info} index={index} />
+                  </AnimationWrapper>
+                 })
+               }
+               {/* this is the trending blog section  */}
+
+              </>  
+               
+
               </InPageNaviagtion>
 
             </div>
@@ -62,7 +95,44 @@ const HomePage = () => {
 
             {/* trending and filters  */}
 
-            <div>
+            <div className="min-w-[40%] lg:min-w-[400px] max-w-min border-l-1 border-gray-200 pl-5 max-md:hidden">
+              <div className="flex flex-col gap-6 ">
+                <h1 className="font-medium text-gray-700  text-xl  text-center  mt-6 ml-10"> Staff Picks Stories From All Interests
+
+                </h1>
+                <div className="flex gap-3 flex-wrap">
+                  {
+                    categories.map((category, index) => {
+                      return (
+                        <div key={index} className="bg-gray-100 px-3 py-2 rounded-full text-gray-700 text-sm cursor-pointer hover:bg-gray-200 transition-colors">
+                          {category}
+                        </div>
+                      )
+                    })
+
+                  }
+
+                </div>
+                 
+              </div>
+              <div>
+                <h1 className="font-medium text-gray-700 text-[17px]  text-center mb-7 mt-5 ml-10"> 
+                  <IoMdTrendingUp className="inline-block text-xl mr-5" />
+                  Trending Blogs
+
+                </h1>
+              </div >
+
+
+              {
+                 trendingBlogs===null ? <Loading/> :
+                 trendingBlogs.map((blog,index)=>{
+                  return <AnimationWrapper transition={{duartion:1,delay:index*0.1}} key={index}>
+                    <MinimalBlogPost content={blog} author={blog.author.personal_info} index={index} />
+                  </AnimationWrapper>
+                 })
+              }
+
 
             </div>
             

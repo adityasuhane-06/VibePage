@@ -3,7 +3,7 @@ import React from 'react'
 import axios from "axios"
 import { useEffect, useState } from "react"
 import InPageNaviagtion from "../component/InpageNavigation.jsx"
-import Loading from "../common/Loading.jsx"
+import Loading from "../components/magicui/Loader.jsx"
 import BlogPostCard from "../component/blog-post-component.jsx"
 import MinimalBlogPost from "../component/minimalBlogPost.jsx"
 
@@ -22,38 +22,45 @@ const HomePage = () => {
   const loadByCategory = (e) => {
     const category = e.target.innerText.toLowerCase();
     console.log("Category selected:", category);
-    // Here you can implement the logic to filter blogs by category
-    // For example, you can make an API call to fetch blogs by category
-    setBlogs([]);
+    
+    setBlogs(null); // Reset blogs to null to show loading state
+    
+    // If clicking on the same category, deselect it and show latest blogs
     if(pageState === category) {
-    setPageState("For You");
-    return;
+      setPageState("For You");
+      fetchLatestBlogs(); // Reload latest blogs when deselecting
+      return;
     }
+    
     setPageState(category);
+    
     // Make an API call to fetch blogs by category  
-
-    axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/blogs?category=${category}`)
-      .then(response => {
-        console.log("Blogs by category:", response.data.blogs);
-        setBlogs(response.data.blogs);
-      })
-      .catch(error => {
-        console.error("Error fetching blogs by category:", error);
-      });
+    // axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/blogs?category=${category}`)
+    //   .then(response => {
+    //     console.log("Blogs by category:", response.data.blogs);
+    //     setBlogs(response.data.blogs);
+    //   })
+    //   .catch(error => {
+    //     console.error("Error fetching blogs by category:", error);
+    //     setBlogs([]); // Set empty array on error
+    //   });
   };
 
 
 
 
-  const fetchLatestBlogs = async (signal) => {
+  const fetchLatestBlogs = async (signal = null) => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/latest-blogs`, { signal });
+      const config = signal ? { signal } : {};
+      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/latest-blogs`, config);
       console.log(data.blogs);
       setBlogs(data.blogs);
       setLoading(false);
     } catch (err) {
-      console.error("Error fetching latest blogs:", err);
-      setLoading(false);
+      if (err.name !== 'AbortError') {
+        console.error("Error fetching latest blogs:", err);
+        setLoading(false);
+      }
     }
   };
   const fetchTrendingBlogs = async (signal) => {
@@ -135,7 +142,8 @@ const HomePage = () => {
                       return (
                         <button key={index} 
                         onClick={ loadByCategory}
-                        className="bg-gray-100 px-3 py-2 rounded-full text-gray-700 text-sm cursor-pointer hover:bg-gray-200 transition-colors">
+                        className={`bg-gray-100 px-3 py-2 rounded-full text-gray-700 text-sm cursor-pointer hover:bg-gray-200 transition-colors ${
+                          pageState === category.toLocaleLowerCase() ? "bg-gray-800 text-white" : ""}`}>
                           {category}
                         </button>
                       )

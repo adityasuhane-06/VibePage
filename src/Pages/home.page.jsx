@@ -12,7 +12,7 @@ import { IoMdTrendingUp } from "react-icons/io";
 const HomePage = () => {
   let [blogs, setBlogs] = useState(null);
   let [loading, setLoading] = useState(true);
-  let [trendingBlogs, setTrendingBlogs] = useState([]);
+  let [trendingBlogs, setTrendingBlogs] = useState(null);
   const [categoriesData, setCategoriesData] = useState([]);
   let categories = ["Technology","AI","Python","Large language Model","Machine Learning","Fitness","Neural Network", "Health", "Lifestyle", "Travel", "Food", "Education", "Finance", "Entertainment", "Sports", "Science", "Politics", "Environment", "Fashion", "Art", "History", "Culture", "Gaming", "Music", "Books", "Photography"];
   let [pageState, setPageState] = useState("For You");

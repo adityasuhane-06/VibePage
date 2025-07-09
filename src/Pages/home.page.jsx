@@ -8,12 +8,13 @@ import BlogPostCard from "../component/blog-post-component.jsx"
 import MinimalBlogPost from "../component/minimalBlogPost.jsx"
 
 import { IoMdTrendingUp } from "react-icons/io";
+
 const HomePage = () => {
   let [blogs, setBlogs] = useState([]);
   let [loading, setLoading] = useState(true);
   let [trendingBlogs, setTrendingBlogs] = useState([]);
   const [categoriesData, setCategoriesData] = useState([]);
-  let categories = ["Technology","AI","Python","Large language Model","Machine Learning","Finance","Nueral Network", "Health", "Lifestyle", "Travel", "Food", "Education", "Finance", "Entertainment", "Sports", "Science", "Politics", "Environment", "Fashion", "Art", "History", "Culture", "Gaming", "Music", "Books", "Photography"];
+  let categories = ["Technology","AI","Python","Large language Model","Machine Learning","Fitness","Neural Network", "Health", "Lifestyle", "Travel", "Food", "Education", "Finance", "Entertainment", "Sports", "Science", "Politics", "Environment", "Fashion", "Art", "History", "Culture", "Gaming", "Music", "Books", "Photography"];
   let [pageState, setPageState] = useState("For You");
   //  page state will be used to determine which page is currently active bydefault it will be "For You" and when user clicks on trending blogs it will be set to "Trending Blogs or when user clicks on category it will be set to that category name"
 
@@ -34,16 +35,20 @@ const HomePage = () => {
     
     setPageState(category);
     
-    // Make an API call to fetch blogs by category  
-    // axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/blogs?category=${category}`)
-    //   .then(response => {
-    //     console.log("Blogs by category:", response.data.blogs);
-    //     setBlogs(response.data.blogs);
-    //   })
-    //   .catch(error => {
-    //     console.error("Error fetching blogs by category:", error);
-    //     setBlogs([]); // Set empty array on error
-    //   });
+     //Make an API call to fetch blogs by category  
+     axios.post(`${import.meta.env.VITE_SERVER_DOMAIN}/api/search-blogs`,{
+      
+       "query": category || pageState
+      
+     })
+       .then(response => {
+         console.log("Blogs by category:", response.data.blogs);
+         setBlogs(response.data.blogs);
+       })
+       .catch(error => {
+         console.error("Error fetching blogs by category:", error);
+         setBlogs([]); // Set empty array on error
+       });
   };
 
 
@@ -91,7 +96,7 @@ const HomePage = () => {
             {/* latest blog */}
 
             <div className='w-full'>
-              <InPageNaviagtion routes={[pageState,"Trending Blogs"]} defaultHidden={["Trending Blogs"]}>
+              <InPageNaviagtion routes={[pageState.toUpperCase(),"Trending Blogs"]} defaultHidden={["Trending Blogs"]}>
                 
                 <>
                 {

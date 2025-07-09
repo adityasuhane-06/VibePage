@@ -12,13 +12,42 @@ const HomePage = () => {
   let [blogs, setBlogs] = useState([]);
   let [loading, setLoading] = useState(true);
   let [trendingBlogs, setTrendingBlogs] = useState([]);
+  const [categoriesData, setCategoriesData] = useState([]);
   let categories = ["Technology","AI","Python","Large language Model","Machine Learning","Finance","Nueral Network", "Health", "Lifestyle", "Travel", "Food", "Education", "Finance", "Entertainment", "Sports", "Science", "Politics", "Environment", "Fashion", "Art", "History", "Culture", "Gaming", "Music", "Books", "Photography"];
+  let [pageState, setPageState] = useState("For You");
+  //  page state will be used to determine which page is currently active bydefault it will be "For You" and when user clicks on trending blogs it will be set to "Trending Blogs or when user clicks on category it will be set to that category name"
+
+
+
+  const loadByCategory = (e) => {
+    const category = e.target.innerText.toLowerCase();
+    console.log("Category selected:", category);
+    // Here you can implement the logic to filter blogs by category
+    // For example, you can make an API call to fetch blogs by category
+    setBlogs([]);
+    if(pageState === category) {
+    setPageState("For You");
+    return;
+    }
+    setPageState(category);
+    // Make an API call to fetch blogs by category  
+
+    axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/blogs?category=${category}`)
+      .then(response => {
+        console.log("Blogs by category:", response.data.blogs);
+        setBlogs(response.data.blogs);
+      })
+      .catch(error => {
+        console.error("Error fetching blogs by category:", error);
+      });
+  };
+
 
 
 
   const fetchLatestBlogs = async (signal) => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}api/latest-blogs`, { signal });
+      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/latest-blogs`, { signal });
       console.log(data.blogs);
       setBlogs(data.blogs);
       setLoading(false);
@@ -29,7 +58,7 @@ const HomePage = () => {
   };
   const fetchTrendingBlogs = async (signal) => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}api/trending-blogs`, { signal });
+      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/trending-blogs`, { signal });
       console.log( "Trending blog ",data.blogs);
       setTrendingBlogs(data.blogs);
       setLoading(false);
@@ -104,7 +133,9 @@ const HomePage = () => {
                   {
                     categories.map((category, index) => {
                       return (
-                        <button key={index} className="bg-gray-100 px-3 py-2 rounded-full text-gray-700 text-sm cursor-pointer hover:bg-gray-200 transition-colors">
+                        <button key={index} 
+                        onClick={ loadByCategory}
+                        className="bg-gray-100 px-3 py-2 rounded-full text-gray-700 text-sm cursor-pointer hover:bg-gray-200 transition-colors">
                           {category}
                         </button>
                       )

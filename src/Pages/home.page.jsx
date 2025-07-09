@@ -49,18 +49,15 @@ const HomePage = () => {
 
 
 
-  const fetchLatestBlogs = async (signal = null) => {
+  const fetchLatestBlogs = async (signal) => {
     try {
-      const config = signal ? { signal } : {};
-      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/latest-blogs`, config);
+      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/latest-blogs`, { signal });
       console.log(data.blogs);
       setBlogs(data.blogs);
       setLoading(false);
     } catch (err) {
-      if (err.name !== 'AbortError') {
-        console.error("Error fetching latest blogs:", err);
-        setLoading(false);
-      }
+      console.error("Error fetching latest blogs:", err);
+      setLoading(false);
     }
   };
   const fetchTrendingBlogs = async (signal) => {
@@ -94,7 +91,7 @@ const HomePage = () => {
             {/* latest blog */}
 
             <div className='w-full'>
-              <InPageNaviagtion routes={["For You","Trending Blogs"]} defaultHidden={["Trending Blogs"]}>
+              <InPageNaviagtion routes={[pageState,"Trending Blogs"]} defaultHidden={["Trending Blogs"]}>
                 
                 <>
                 {

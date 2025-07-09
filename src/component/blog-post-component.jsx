@@ -19,7 +19,7 @@ const BlogPostCard=({content,author})=>{
         <h1 className="blog-title text-start text-xl front-bold">{title}</h1>
         <p className="my-3 text-['10px'] text-start leading-7 max-sm:hidden md:max-[1100px] line-clamp-2 ">{des}</p>
         <div className="flex  gap-5 items-center">
-            <span className="bg-gray-100 py-0.5 rounded-4xl  px-3 mb-2">{tags[0]}</span>
+            <span className="bg-gray-100 py-0.5 rounded-4xl text-center  px-3 mb-2">{tags[0]}</span>
             <span className=" text-xl flex items-center gap-3 py-0.5  mb-2 ml-2"> 
                 <AiOutlineLike className="inline-block  text-gray-500" />
                 {total_likes} 

@@ -1,9 +1,11 @@
 
 import React, { useRef, useState, useEffect } from 'react'
 import { IoMdAdd } from "react-icons/io";
+export let activeTabLineRef, activeTabRef;
 const InPageNaviagtion = ({routes,defaultHidden=[], defaultActiveIndex = 0,children}) => {
     const [currentPageIndex, setCurrentPagesIndex] = useState(defaultActiveIndex);
-    const activeTabLineRef = useRef();
+   activeTabLineRef = useRef();
+   activeTabRef= useRef();
     
     const changePageState = (e, i) => {
         setCurrentPagesIndex(i);
@@ -35,6 +37,8 @@ const InPageNaviagtion = ({routes,defaultHidden=[], defaultActiveIndex = 0,child
 
             
               <button 
+              ref={activeTabRef}
+
                 key={index} 
                 onClick={(e) => changePageState(e, index)} 
                 className={`tab-button flex-shrink-0  px-6 py-4 text-[13px] font-semibold hover:text-blue-600 cursor-pointer transition-colors duration-200 ${currentPageIndex === index ? " text-black" : " text-gray-500"} ${defaultHidden.includes(route) ? 'md:hidden' : ''}`}

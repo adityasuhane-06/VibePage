@@ -93,7 +93,7 @@ const HomePage = () => {
             </div>
 
 
-            {/* trending and filters  */}
+            {/* trending blogs  and filters   */}
 
             <div className="min-w-[40%] lg:min-w-[400px] max-w-min border-l-1 border-gray-200 pl-5 max-md:hidden">
               <div className="flex flex-col gap-6 ">
@@ -116,7 +116,7 @@ const HomePage = () => {
                  
               </div>
               <div>
-                <h1 className="font-medium text-gray-700 text-[17px]  text-center mb-7 mt-5 ml-10"> 
+                <h1 className="font-medium text-gray-700 text-[17px]  text-center mb-7 mt-5 ml-10 border-b-1 border-gray-200"> 
                   <IoMdTrendingUp className="inline-block text-xl mr-5" />
                   Trending Blogs
 

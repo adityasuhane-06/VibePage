@@ -10,7 +10,7 @@ import MinimalBlogPost from "../component/minimalBlogPost.jsx"
 import { IoMdTrendingUp } from "react-icons/io";
 
 const HomePage = () => {
-  let [blogs, setBlogs] = useState([]);
+  let [blogs, setBlogs] = useState(null);
   let [loading, setLoading] = useState(true);
   let [trendingBlogs, setTrendingBlogs] = useState([]);
   const [categoriesData, setCategoriesData] = useState([]);

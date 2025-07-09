@@ -104,9 +104,9 @@ const HomePage = () => {
                   {
                     categories.map((category, index) => {
                       return (
-                        <div key={index} className="bg-gray-100 px-3 py-2 rounded-full text-gray-700 text-sm cursor-pointer hover:bg-gray-200 transition-colors">
+                        <button key={index} className="bg-gray-100 px-3 py-2 rounded-full text-gray-700 text-sm cursor-pointer hover:bg-gray-200 transition-colors">
                           {category}
-                        </div>
+                        </button>
                       )
                     })
 

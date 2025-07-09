@@ -34,10 +34,8 @@ const Navbar = () => {
 
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: 'research', label: 'Research' },
     { path: '/write', label: 'Write' },
     { path: '/about', label: 'About' },
-    { path: '/VibeAI', label: 'VibeAI' },
   ]
 
   return (

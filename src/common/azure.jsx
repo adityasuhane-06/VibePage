@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_BASE_URL =  'https://server-vibepage.vercel.app';
+
 const uploadImage = async (imgFile) => {
   try {
     const headers = {
@@ -9,7 +9,7 @@ const uploadImage = async (imgFile) => {
     };
 
     // Step 1: Get a signed upload URL from your backend
-    const { data: { imageUrl } } = await axios.post(API_BASE_URL+
+    const { data: { imageUrl } } = await axios.post(import.meta.env.VITE_SERVER_DOMAIN+
       '/api/upload-url',
       imgFile,
       { headers }
@@ -31,7 +31,7 @@ export const uploadAttachment=async (file) => {
       'content-disposition': `attachment; filename="${file.name}"`,
       'x-caption': 'Uploaded from React',
     }
-    const {data:{fileUrl}}=await axios.post(API_BASE_URL+
+    const {data:{fileUrl}}=await axios.post(import.meta.env.VITE_SERVER_DOMAIN+
       '/api/upload-file',
       file,
       { headers: header }

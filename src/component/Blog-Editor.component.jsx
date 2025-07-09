@@ -13,13 +13,11 @@ import { setTitle,setAuthor,setBanner,setContent,setDes,setTags } from '../featu
 import { TypingAnimation } from "../components/magicui/typing-animation";
 const BlogEditor = ({editorSate,setEditorState}) => {
   const screenWidth = window.screen.width;
-const screenHeight = window.screen.height;
-
+  const screenHeight = window.screen.height;
   const dispatch=useDispatch();
   const blog = useSelector((state)=>state.blog);
   const editorRef = useRef(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
-
 
   useEffect(() => {
     let editor = null;
@@ -74,12 +72,7 @@ const screenHeight = window.screen.height;
       }
     };
   }, []);
-
-
-  
-
-
-
+  // useEffect will run when the component mounts and unmounts
 
   const handleBannerUpload = (e) => {
     let loadingToast = toast.loading("Uploading Image...");
@@ -89,7 +82,6 @@ const screenHeight = window.screen.height;
         if(url){
           toast.dismiss(loadingToast);
           toast.success("Image uploaded successfully");
-          console.log("url:",url);
           dispatch(setBanner(url));
         }
       })
@@ -121,6 +113,8 @@ const screenHeight = window.screen.height;
 
   
   }
+  //here handleTitleChange is used to handle the title input change and adjust the height of the textarea dynamically 
+  
   const handlePublishEvent = async (e) => {
   if (!blog.title || !blog.banner) {
     toast.error("Please fill all the fields");
@@ -137,9 +131,8 @@ const screenHeight = window.screen.height;
 
     if (content.blocks.length) {
       const firstBlockText = content.blocks[0]?.data?.text || "";
-      console.log("First block text:", firstBlockText);
       dispatch(setDes(firstBlockText));
-      console.log(firstBlockText.split(" "));
+    
       dispatch(setTags(firstBlockText.split(" ").slice(0, 5)));
     }
     else{
@@ -147,24 +140,20 @@ const screenHeight = window.screen.height;
     }
 
     dispatch(setContent(content));
-    console.log("Final blog content:", content);
     let datasize =content.blocks.length
-  let blogdata="" 
-  console.log("datasize:",datasize)
-  setEditorState("publish");
-  for(let i=0;i<datasize;i++){
+    let blogdata="" 
+    setEditorState("publish");
+    for(let i=0;i<datasize;i++){
 
-    blogdata+=content.blocks[i].type=="paragraph"?content.blocks[i].data.text:""
-    blogdata+="\n"
+      blogdata+=content.blocks[i].type=="paragraph"?content.blocks[i].data.text:""
+      blogdata+="\n"
 
-  }
-  console.log("blogdata:",blogdata)
-
+    }
     toast.success("Blog content saved!");
-  } catch (error) {
-    console.error("Failed to save editor content:", error);
-    toast.error("Error saving blog content!");
-  }
+    } catch (error) {
+      console.error("Failed to save editor content:", error);
+      toast.error("Error saving blog content!");
+    }
 };
   const showNavbar=()=>{
     const navbar = document.querySelector('.navbar');
@@ -175,13 +164,11 @@ const screenHeight = window.screen.height;
   useEffect(() => {
   showNavbar();
 }, [showNavbar]);
+  const SaveDraft = async (e) => {
+    
+  }
 
-
-
-
-
-
-    const buttonStyle ="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br font-medium rounded-4xl text-sm px-5.5 py-2.5 text-center me-2 mb-2";
+const buttonStyle ="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br font-medium rounded-4xl text-sm px-5.5 py-2.5 text-center me-2 mb-2";
   return (
    <>
     
@@ -247,7 +234,9 @@ const screenHeight = window.screen.height;
   <div className={`flex gap-2 justify-center items-center ml-6`}>
     <button className={`${buttonStyle}`}
     onClick={handlePublishEvent}>Publish </button>
-     <button className={`${buttonStyle}`}>Save </button>
+     <button 
+     onClick={SaveDraft}
+     className={`${buttonStyle}`}>Save </button>
   </div>
 )}
 

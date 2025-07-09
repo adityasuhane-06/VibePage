@@ -6,9 +6,14 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { setTitle, setAuthor, setBanner, setContent, setDes, setTags } from '../features/Blog/blog'
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import Tag from './tag'
+
 const PublishForm = ({ editorState, setEditorState }) => {
+  let navigate = useNavigate()
   const blog = useSelector((state) => state.blog)
+  const User= useSelector((state) => state.auth.data.user)
   const dispatch = useDispatch()
   const [tagInput, setTagInput] = useState('')
 
@@ -53,6 +58,74 @@ const PublishForm = ({ editorState, setEditorState }) => {
       setTagInput('')
       toast.success('Tag added')
     }
+  }
+  const PublishBlog = (e) => {
+    
+
+    if(e.target.classList.contains('disabled')) {
+      return 
+    }
+
+    if (blog.tags.length > 10) {
+      toast.error("You can only add up to 10 tags")
+    }
+    if (blog.des.length > 200) {
+      toast.error("Description cannot exceed 200 characters")
+      return
+    }
+    if (blog.title.length > 100) {
+      toast.error("Title cannot exceed 100 characters")
+      return
+    }
+    if (!blog.content || blog.content.length < 100) {
+      toast.error("Content must be at least 100 characters long")
+      return
+    }
+    if (!blog.banner) {
+      toast.error("Please upload a banner image") 
+      return
+    }
+    let loadingToast = toast.loading("Publishing your blog...")
+
+    e.target.classList.add('disabled')
+    let blogObject={
+      title: blog.title,
+      banner: blog.banner,
+      des: blog.des,
+      content: blog.content,
+      tags: blog.tags,
+      draft: false,
+
+    }
+
+    let token= localStorage.getItem('accessToken');
+    axios.post("http://localhost:3000/api/create-blog",blogObject,{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+     } }).then(()=>{
+      e.target.classList.remove('disabled')
+      toast.dismiss(loadingToast)
+      toast.success("Blog published successfully!")
+      setTimeout(() => {
+        navigate("/")
+     },500)
+    })
+    .catch(({response}) => {
+      e.target.classList.remove('disabled')
+      toast.dismiss(loadingToast)
+      toast.error("Failed to publish blog. Please try again later.",response)
+   } );
+
+
+    
+    // Reset the form after publishing
+    dispatch(setTitle(''));
+    dispatch(setDes(''))
+    dispatch(setBanner(''))
+    dispatch(setTags([]))
+    dispatch(setContent(''))
+    e.target.classList.remove('disabled')
   }
 
   return (
@@ -184,21 +257,7 @@ const PublishForm = ({ editorState, setEditorState }) => {
               {/* Publish Button */}
               <button
                 className='w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-[1.02] mt-8'
-                onClick={() => {
-                  if (!blog.title?.trim()) {
-                    toast.error("Please add a title")
-                    return
-                  }
-                  if (!blog.des?.trim()) {
-                    toast.error("Please add a description")
-                    return
-                  }
-                  if (!blog.tags || blog.tags.length === 0) {
-                    toast.error("Please add at least one tag")
-                    return
-                  }
-                  toast.success("Blog published successfully!")
-                }}
+                onClick={PublishBlog}
               >
                 Publish Blog
               </button>

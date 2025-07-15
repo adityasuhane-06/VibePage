@@ -109,7 +109,7 @@ const HomePage = () => {
         countRoute: "all-trending-blogs",
         data_to_send: {}
       });
-      setTrendingBlogs(data.blogs);
+      setTrendingBlogs(trendingBlogs);
       setLoading(false);
     } catch (err) {
       console.error("Error fetching trending blogs:", err);
@@ -156,8 +156,8 @@ const HomePage = () => {
               <>
                 {
                  trendingBlogs === null ? <Loading/> :
-                 trendingBlogs.length === 0 ? <NoDataMessage message="No trending blogs available at the moment." /> :
-                 trendingBlogs.map((blog,index)=>{
+                 trendingBlogs.result.length === 0 ? <NoDataMessage message="No trending blogs available at the moment." /> :
+                 trendingBlogs.result.map((blog,index)=>{
                   return <AnimationWrapper transition={{duartion:1,delay:index*0.1}} key={index}>
                     <MinimalBlogPost content={blog} author={blog.author.personal_info} index={index} />
                   </AnimationWrapper>

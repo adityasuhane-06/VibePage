@@ -102,6 +102,13 @@ const HomePage = () => {
     try {
       const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/trending-blogs`, { signal });
       console.log( "Trending blog ",data.blogs);
+      let trendingBlogs=await FilterPaginationData({
+        state: trendingBlogs,
+        data: data.blogs,
+        page: 1,
+        countRoute: "all-trending-blogs",
+        data_to_send: {}
+      });
       setTrendingBlogs(data.blogs);
       setLoading(false);
     } catch (err) {
@@ -156,6 +163,8 @@ const HomePage = () => {
                   </AnimationWrapper>
                  })
                }
+                {/* Load more blogs for trending section */}
+                <LoadMoreBlogs state={trendingBlogs} fetchLatestBlogs={fetchTrendingBlogs}/>
                {/* this is the trending blog section  */}
 
               </>  
@@ -210,6 +219,7 @@ const HomePage = () => {
                   </AnimationWrapper>
                  })
               }
+              <LoadMoreBlogs state={trendingBlogs} fetchLatestBlogs={fetchTrendingBlogs}/>
 
 
             </div>

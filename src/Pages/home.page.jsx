@@ -8,9 +8,20 @@ import BlogPostCard from "../component/blog-post-component.jsx"
 import MinimalBlogPost from "../component/minimalBlogPost.jsx"
 
 import { IoMdTrendingUp } from "react-icons/io";
+import NoDataMessage from "../component/noData.jsx"
+import { FilterPaginationData } from "../common/FilterPaginationData.jsx"
+import LoadMoreBlogs from "../component/LoadMoreBlog.jsx"
 
 const HomePage = () => {
   let [blogs, setBlogs] = useState(null);
+  /* pagination state
+  bogs=[{},{},{}]
+  -> 
+  blogs={result:[{},{},{},{},{}]
+  page:1
+  toaldoc:10 10-5=/0 so we request again  for 5 blogs
+  } this will be used to store the blogs fetched from the server for page rendering 
+  */
   let [loading, setLoading] = useState(true);
   let [trendingBlogs, setTrendingBlogs] = useState(null);
   const [categoriesData, setCategoriesData] = useState([]);
@@ -42,8 +53,15 @@ const HomePage = () => {
       
      })
        .then(response => {
-         console.log("Blogs by category:", response.data.blogs);
+        if(response.data.blogs && response.data.blogs.length > 0){
+          console.log("Blogs by category:", response.data.blogs);
          setBlogs(response.data.blogs);
+        }
+        else{
+          console.log("No blogs found for this category.");
+          setBlogs([]); // Set empty array if no blogs found
+        }
+         
        })
        .catch(error => {
          console.error("Error fetching blogs by category:", error);
@@ -54,15 +72,30 @@ const HomePage = () => {
 
 
 
-  const fetchLatestBlogs = async (signal) => {
+  const fetchLatestBlogs = async (signal = null, page = 1) => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/latest-blogs`, { signal });
-      console.log(data.blogs);
-      setBlogs(data.blogs);
+      const config = signal ? { signal } : {};
+      const { data } = await axios.post(`${import.meta.env.VITE_SERVER_DOMAIN}/api/latest-blogs`, { page }, config);
+      console.log("Latest blogs fetched before formatting:", data.blogs);
+
+      // Format the blogs data using FilterPaginationData
+      let formatedBlogs = await FilterPaginationData({
+        state: blogs,
+        data: data.blogs,
+        page: page,
+        countRoute: "all-latest-blogs",
+      });
+
+      console.log("Latest blogs fetched after formatting:", formatedBlogs);
+      setBlogs(formatedBlogs);
       setLoading(false);
+      
     } catch (err) {
-      console.error("Error fetching latest blogs:", err);
-      setLoading(false);
+      if (err.name !== 'AbortError') {
+        console.error("Error fetching latest blogs:", err);
+        setLoading(false);
+      }
+      throw err; // Re-throw so LoadMore component can handle the error
     }
   };
   const fetchTrendingBlogs = async (signal) => {
@@ -100,21 +133,23 @@ const HomePage = () => {
                 
                 <>
                 {
-                  blogs===null ? <Loading/> :
-                  blogs.map((blog,index)=>{
+                  blogs === null ? <Loading/> :
+                  blogs.result.length === 0 ? <NoDataMessage message="No blogs found for this category." /> :
+                  blogs.result.map((blog,index)=>{
                     return <AnimationWrapper transition={{duartion:1,delay:index*0.1}} key={index}>
                       <BlogPostCard content={blog} author={blog.author.personal_info} />
                     </AnimationWrapper>
                   })
-                  
-
-                  
                 }
+                <LoadMoreBlogs state={blogs} fetchLatestBlogs={fetchLatestBlogs}/>
                 </>
+
+
                 {/* this is the latest blog section  */}
               <>
                 {
-                 trendingBlogs===null ? <Loading/> :
+                 trendingBlogs === null ? <Loading/> :
+                 trendingBlogs.length === 0 ? <NoDataMessage message="No trending blogs available at the moment." /> :
                  trendingBlogs.map((blog,index)=>{
                   return <AnimationWrapper transition={{duartion:1,delay:index*0.1}} key={index}>
                     <MinimalBlogPost content={blog} author={blog.author.personal_info} index={index} />
@@ -133,7 +168,8 @@ const HomePage = () => {
 
             {/* trending blogs  and filters   */}
 
-            <div className="min-w-[40%] lg:min-w-[400px] max-w-min border-l-1 border-gray-200 pl-5 max-md:hidden">
+               <>
+               <div className="min-w-[40%] lg:min-w-[400px] max-w-min border-l-1 border-gray-200 pl-5 max-md:hidden">
               <div className="flex flex-col gap-6 ">
                 <h1 className="font-medium text-gray-700  text-xl  text-center  mt-6 ml-10"> Staff Picks Stories From All Interests
 
@@ -166,7 +202,8 @@ const HomePage = () => {
 
 
               {
-                 trendingBlogs===null ? <Loading/> :
+                 trendingBlogs === null ? <Loading/> :
+                 trendingBlogs.length === 0 ? <NoDataMessage message="No trending blogs available." /> :
                  trendingBlogs.map((blog,index)=>{
                   return <AnimationWrapper transition={{duartion:1,delay:index*0.1}} key={index}>
                     <MinimalBlogPost content={blog} author={blog.author.personal_info} index={index} />
@@ -176,6 +213,8 @@ const HomePage = () => {
 
 
             </div>
+               </>
+            
             
         </section>
 

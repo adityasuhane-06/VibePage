@@ -98,10 +98,10 @@ const HomePage = () => {
       throw err; // Re-throw so LoadMore component can handle the error
     }
   };
-  const fetchTrendingBlogs = async (signal) => {
+  const fetchTrendingBlogs = async (signal=null,page=1) => {
     try {
       let config = signal ? { signal } : {};
-      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/trending-blogs`, { page: 1 }, config);
+      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/trending-blogs`, { page }, config);
       console.log( "Trending blog ",data.blogs);
       let trendingBlogs=await FilterPaginationData({
         create_new_state: true,

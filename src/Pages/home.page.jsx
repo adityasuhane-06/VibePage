@@ -100,9 +100,11 @@ const HomePage = () => {
   };
   const fetchTrendingBlogs = async (signal) => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/trending-blogs`, { signal });
+      let config = signal ? { signal } : {};
+      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/trending-blogs`, { page: 1 }, config);
       console.log( "Trending blog ",data.blogs);
       let trendingBlogs=await FilterPaginationData({
+        create_new_state: true,
         state: trendingBlogs,
         data: data.blogs,
         page: 1,

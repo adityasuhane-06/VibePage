@@ -5,7 +5,7 @@ const LoadMoreBlogs = ({ state, fetchLatestBlogs }) => {
     
     try {
       const page = state.page + 1; 
-      console.log("Loading more blogs for page:", page);
+     
       
       const Controller = new AbortController();
       await fetchLatestBlogs(Controller.signal, page); 

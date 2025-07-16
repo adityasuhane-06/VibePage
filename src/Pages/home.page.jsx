@@ -6,11 +6,12 @@ import InPageNaviagtion from "../component/InpageNavigation.jsx"
 import Loading from "../components/magicui/Loader.jsx"
 import BlogPostCard from "../component/blog-post-component.jsx"
 import MinimalBlogPost from "../component/minimalBlogPost.jsx"
-
-import { IoMdTrendingUp } from "react-icons/io";
+import { activeTabLineRef } from "../component/InpageNavigation.jsx"
+import { IoMdTrendingUp, IoMdVolumeHigh } from "react-icons/io";
 import NoDataMessage from "../component/noData.jsx"
 import { FilterPaginationData } from "../common/FilterPaginationData.jsx"
 import LoadMoreBlogs from "../component/LoadMoreBlog.jsx"
+import PageNotFound from "../Pages/404.page.jsx"
 
 const HomePage = () => {
   let [blogs, setBlogs] = useState(null);
@@ -22,7 +23,7 @@ const HomePage = () => {
   toaldoc:10 10-5=/0 so we request again  for 5 blogs
   } this will be used to store the blogs fetched from the server for page rendering 
   */
-  let [loading, setLoading] = useState(true);
+
   let [trendingBlogs, setTrendingBlogs] = useState(null);
   const [categoriesData, setCategoriesData] = useState([]);
   let categories = ["Technology","AI","Python","Large language Model","Machine Learning","Fitness","Neural Network", "Health", "Lifestyle", "Travel", "Food", "Education", "Finance", "Entertainment", "Sports", "Science", "Politics", "Environment", "Fashion", "Art", "History", "Culture", "Gaming", "Music", "Books", "Photography"];
@@ -31,7 +32,7 @@ const HomePage = () => {
 
 
 
-  const loadByCategory = (e) => {
+  const loadByCategory =  (e) => {
     const category = e.target.innerText.toLowerCase();
     console.log("Category selected:", category);
     
@@ -52,10 +53,20 @@ const HomePage = () => {
        "query": category || pageState
       
      })
-       .then(response => {
+       .then(async response => {
+        console.log("Blogs fetched by category:", response.data);
         if(response.data.blogs && response.data.blogs.length > 0){
           console.log("Blogs by category:", response.data.blogs);
-         setBlogs(response.data.blogs);
+          
+          let formattedBlogs = await FilterPaginationData({
+            state: null,
+            data: response.data.blogs,
+            page: 1, // Reset to first page
+            countRoute: "all-latest-blogs",
+          });
+         setBlogs(formattedBlogs); // Update blogs state with formatted data
+           // Set loading to false after fetching blogs
+          console.log("Formated Blogs fetched by category:", formattedBlogs);
         }
         else{
           console.log("No blogs found for this category.");
@@ -69,14 +80,14 @@ const HomePage = () => {
        });
   };
 
-
+  
 
 
   const fetchLatestBlogs = async (signal = null, page = 1) => {
     try {
       const config = signal ? { signal } : {};
       const { data } = await axios.post(`${import.meta.env.VITE_SERVER_DOMAIN}/api/latest-blogs`, { page }, config);
-      console.log("Latest blogs fetched before formatting:", data.blogs);
+     
 
       // Format the blogs data using FilterPaginationData
       let formatedBlogs = await FilterPaginationData({
@@ -85,15 +96,13 @@ const HomePage = () => {
         page: page,
         countRoute: "all-latest-blogs",
       });
-
-      console.log("Latest blogs fetched after formatting:", formatedBlogs);
       setBlogs(formatedBlogs);
-      setLoading(false);
+      
       
     } catch (err) {
       if (err.name !== 'AbortError') {
         console.error("Error fetching latest blogs:", err);
-        setLoading(false);
+        
       }
       throw err; // Re-throw so LoadMore component can handle the error
     }
@@ -101,21 +110,21 @@ const HomePage = () => {
   const fetchTrendingBlogs = async (signal=null,page=1) => {
     try {
       let config = signal ? { signal } : {};
-      const { data } = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/trending-blogs`, { page }, config);
-      console.log( "Trending blog ",data.blogs);
-      let trendingBlogs=await FilterPaginationData({
-        create_new_state: true,
+      const { data } = await axios.post(`${import.meta.env.VITE_SERVER_DOMAIN}/api/trending-blogs`, { page }, config);
+      
+      let formatData=await FilterPaginationData({
+      
         state: trendingBlogs,
         data: data.blogs,
-        page: 1,
-        countRoute: "all-trending-blogs",
-        data_to_send: {}
+        page: page ,
+        countRoute: "all-latest-blogs",
+       
       });
-      setTrendingBlogs(trendingBlogs);
-      setLoading(false);
+      setTrendingBlogs(formatData);
+      
     } catch (err) {
       console.error("Error fetching trending blogs:", err);
-      setLoading(false);
+      
     }
   };
 
@@ -138,29 +147,35 @@ const HomePage = () => {
             {/* latest blog */}
 
             <div className='w-full'>
-              <InPageNaviagtion routes={[pageState.toUpperCase(),"Trending Blogs"]} defaultHidden={["Trending Blogs"]}>
+              <InPageNaviagtion routes={[pageState.charAt(0).toUpperCase()+pageState.slice(1),"Trending Blogs"]} defaultHidden={["Trending Blogs"]}>
                 
                 <>
                 {
+                  console.log("Blogs state:", blogs)
+                }
+                {
                   blogs === null ? <Loading/> :
-                  blogs.result.length === 0 ? <NoDataMessage message="No blogs found for this category." /> :
-                  blogs.result.map((blog,index)=>{
+                  blogs.length === 0 ? <PageNotFound /> :
+                  
+                  blogs.result&&blogs.result.length === 0 ?<PageNotFound /> :
+                   blogs.result&&blogs.result.map((blog,index)=>{
                     return <AnimationWrapper transition={{duartion:1,delay:index*0.1}} key={index}>
                       <BlogPostCard content={blog} author={blog.author.personal_info} />
                     </AnimationWrapper>
                   })
-                }
-                <LoadMoreBlogs state={blogs} fetchLatestBlogs={fetchLatestBlogs}/>
+                }               
+                {/* {pageState==="For You"} */}<LoadMoreBlogs state={blogs} fetchLatestBlogs={fetchLatestBlogs}/> 
                 </>
 
 
                 {/* this is the latest blog section  */}
               <>
                 {
+
                  trendingBlogs === null ? <Loading/> :
-                 trendingBlogs.result.length === 0 ? <NoDataMessage message="No trending blogs available at the moment." /> :
-                 trendingBlogs.result.map((blog,index)=>{
-                  return <AnimationWrapper transition={{duartion:1,delay:index*0.1}} key={index}>
+                 trendingBlogs.result && trendingBlogs.result.length === 0 ? <NoDataMessage message="No trending blogs available at the moment." /> :
+                trendingBlogs.result && trendingBlogs.result.map((blog,index)=>{
+                  return <AnimationWrapper transition={{duartion:1,delay:index*0.1}} key={index}>   
                     <MinimalBlogPost content={blog} author={blog.author.personal_info} index={index} />
                   </AnimationWrapper>
                  })
@@ -214,8 +229,8 @@ const HomePage = () => {
 
               {
                  trendingBlogs === null ? <Loading/> :
-                 trendingBlogs.length === 0 ? <NoDataMessage message="No trending blogs available." /> :
-                 trendingBlogs.map((blog,index)=>{
+                trendingBlogs.result && trendingBlogs.result.length === 0 ? <NoDataMessage message="No trending blogs available." /> :
+                trendingBlogs.result &&  trendingBlogs.result.map((blog,index)=>{
                   return <AnimationWrapper transition={{duartion:1,delay:index*0.1}} key={index}>
                     <MinimalBlogPost content={blog} author={blog.author.personal_info} index={index} />
                   </AnimationWrapper>

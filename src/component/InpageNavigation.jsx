@@ -4,6 +4,7 @@ import { IoMdAdd } from "react-icons/io";
 export let activeTabLineRef, activeTabRef;
 const InPageNaviagtion = ({routes,defaultHidden=[], defaultActiveIndex = 0,children}) => {
     const [currentPageIndex, setCurrentPagesIndex] = useState(defaultActiveIndex);
+    const [isInitialized, setIsInitialized] = useState(false);
    activeTabLineRef = useRef();
    activeTabRef= useRef();
     
@@ -12,21 +13,23 @@ const InPageNaviagtion = ({routes,defaultHidden=[], defaultActiveIndex = 0,child
         const buttonWidth = e.target.offsetWidth;
         const buttonLeft = e.target.offsetLeft;
         if (activeTabLineRef.current) {
-            activeTabLineRef.current.style.width = `${buttonWidth}px`;
+            activeTabLineRef.current.style.width = `${buttonWidth}px`
             activeTabLineRef.current.style.left = `${buttonLeft}px`;
         }
     }
     
+    
     // Initialize the active tab line position on mount
     useEffect(() => {
         if (activeTabLineRef.current && routes.length > 0) {
-            const firstButton = document.querySelector('.tab-button');
-            if (firstButton) {
-                activeTabLineRef.current.style.width = `${firstButton.offsetWidth}px`;
-                activeTabLineRef.current.style.left = `${firstButton.offsetLeft}px`;
+            const activeButton = document.querySelector('.tab-button')[currentPageIndex];
+            if (activeButton) {
+                activeTabLineRef.current.style.width = `${activeButton.offsetWidth}px`;
+                activeTabLineRef.current.style.left = `${activeButton.offsetLeft}px`;
+                setIsInitialized(true);
             }
         }
-    }, [routes]);
+    }, [routes, currentPageIndex, isInitialized]);
     
     return (
       <>

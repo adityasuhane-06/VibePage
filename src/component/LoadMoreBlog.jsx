@@ -1,6 +1,8 @@
+
 import React from 'react'
-const LoadMoreBlogs = ({ state, fetchLatestBlogs }) => {
+const LoadMoreBlogs = ({ state, fetchLatestBlogs}) => {
   const loadMore = async () => {
+ 
     if (!state) return;
     
     try {
@@ -8,10 +10,10 @@ const LoadMoreBlogs = ({ state, fetchLatestBlogs }) => {
      
       
       const Controller = new AbortController();
+    
       await fetchLatestBlogs(Controller.signal, page); 
-     
-      
-    } catch (error) {
+    
+  }catch (error) {
       console.error("Error loading more blogs:", error);
     }
   };

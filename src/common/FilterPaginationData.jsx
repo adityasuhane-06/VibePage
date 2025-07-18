@@ -17,7 +17,7 @@ export const FilterPaginationData = async ({create_new_state = false, state, dat
   // }
   
   // If state exists and has results, and we're not creating a new state (append mode)
-  if (state !== null && state.result && state.result.length > 0 && !create_new_state) {
+  if (state !== null && !create_new_state) {
     obj = {
       ...state,
       result: [...state.result, ...data],
@@ -28,8 +28,8 @@ export const FilterPaginationData = async ({create_new_state = false, state, dat
   else {
     // Create new state - fetch total docs count from server
     try {
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_DOMAIN}/api/${countRoute}`, {
-        ...data_to_send,
+      const response = await axios.post(`http://localhost:3000/api/${countRoute}`, {
+       ...data_to_send,
         page
       });
       
@@ -42,7 +42,7 @@ export const FilterPaginationData = async ({create_new_state = false, state, dat
       console.error("Error fetching total docs:", error);
       // Fallback object if API call fails
       obj = {
-        result: data,
+        result: data.blogs,
         page: 1,
         totalDocs: data.length || 0
       };

@@ -1,10 +1,11 @@
 import React from 'react';
+import image from '../assets/download.png'; // Add your no data image
 
 const NoDataMessage = ({ message }) => {
     return (
         <div className="w-full p-4 flex flex-col items-center justify-center py-16">
             <img
-                src="src/assets/download.png"
+                src={image}
                 alt="No Data"
                 className="w-30 h-30 mb-6 object-contain"
             />

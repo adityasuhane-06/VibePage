@@ -23,9 +23,10 @@ const InPageNaviagtion = ({routes,defaultHidden=[], defaultActiveIndex = 0,child
     useEffect(() => {
         if (activeTabLineRef.current && routes.length > 0) {
             const activeButton = document.querySelector('.tab-button')[currentPageIndex];
+            const button = document.querySelector('.tab-button')
             if (activeButton) {
-                activeTabLineRef.current.style.width = `${activeButton.offsetWidth}px`;
-                activeTabLineRef.current.style.left = `${activeButton.offsetLeft}px`;
+                activeTabLineRef.current.style.width = `${button.offsetWidth}px`;
+                activeTabLineRef.current.style.left = `${button.offsetLeft}px`;
                 setIsInitialized(true);
             }
         }

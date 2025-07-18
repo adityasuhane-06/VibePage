@@ -8,6 +8,9 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { loginStart, loginFailure, loginSuccess, logOut } from '../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { nav } from 'motion/react-client'
+import axios from 'axios'
+
+import { FilterPaginationData } from '../common/FilterPaginationData'
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -20,11 +23,12 @@ const Navbar = () => {
   const { user, isLoggedIN } = useSelector((state) => state.auth.data);
   const navigate = useNavigate();
 
-  const handleSearch = (e) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      console.log('Searching for:', searchQuery)
-    }
+  const handleSearch =async (e) => {
+    e.preventDefault();
+    if(searchQuery.trim() === '') return;
+else{
+  navigate(`/search/${searchQuery}`);
+}
   }
 
   const handleLogout = () => {
@@ -236,4 +240,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Navbar;

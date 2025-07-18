@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import pageNotFoundImage from '../assets/404.png'; // Add your 404 image
+import pageNotFoundImage from "../assets/404-removebg-preview.png"; // Add your 404 image
 import fullLogo from '../assets/logo.png'; // Add your logo
 import AnimationWrapper from '../common/page-animation';
 

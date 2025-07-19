@@ -84,7 +84,7 @@ const InPageNavigation = ({routes, defaultHidden = [], defaultActiveIndex = 0, c
     
     return (
         <>
-            <div className="relative mb-6 sm:mb-8 bg-white border-b border-gray-100">
+            <div className="relative mb-6 sm:mb-8 bg-white border-b border-gray-100 mt-4">
                 {/* Mobile: Show scroll indicators if needed */}
                 {isScrollable && (
                     <>

@@ -64,13 +64,15 @@ const BlogPostCard=({content,author})=>{
                     </Link>
                 ))}
             {/* Likes */}
-        <span className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500">
+             </div>
+
+        <span className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 mt-3 sm:mt-6">
             <AiOutlineLike className="w-4 h-4 flex-shrink-0" />
             <span className="font-medium">{formatLikes(total_likes)}</span>
         </span>
                 
                 
-        </div>
+       
             </div>
 
 

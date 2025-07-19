@@ -3,7 +3,7 @@ import React from 'react'
 import axios from "axios"
 import { useEffect, useState } from "react"
 import InPageNaviagtion from "../component/InpageNavigation.jsx"
-import Loading from "../components/magicui/Loader.jsx"
+import Loading from "../component/Loader.jsx"
 import BlogPostCard from "../component/blog-post-component.jsx"
 import MinimalBlogPost from "../component/minimalBlogPost.jsx"
 import { activeTabLineRef } from "../component/InpageNavigation.jsx"

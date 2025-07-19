@@ -9,9 +9,9 @@ import Editor from './Pages/editor.pages'
 import HomePage from './Pages/home.page'
 import SearchPage from './Pages/search.page.jsx'
 import PageNotFound from './Pages/404.page'
+import ProfilePage from './Pages/profile.page'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
@@ -23,8 +23,10 @@ function App() {
       <Route path ='/signup' element={<UserAuthForm/>} />
       <Route path ='/login' element={<Login/>} />
       <Route path ='/write' element={<Editor/>} />
-      <Route path='search/:query/' element={<SearchPage />} />
+      <Route  path='search/:query/' element={<SearchPage />} />
       <Route path='*' element={<PageNotFound />} />
+      <Route path='/about' element={<ProfilePage/>} />
+      <Route path="user/:id" element={<ProfilePage/>} />
       </Route>
       
 

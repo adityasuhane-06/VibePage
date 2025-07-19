@@ -2,8 +2,10 @@ import { getDay } from "../common/day";
 import React from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { FaComment } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 const BlogPostCard=({content,author})=>{
-    let {title,banner,des,tags,publishedAt,activity:{total_likes},blog_id:_id}=content;
+    let {title,banner,des,tags,publishedAt,activity:{total_likes,total_comments,total_reads},blog_id:_id}=content;
     let {fullname,profile_img,userName}=author;
         const formatLikes = (likes) => {
         if (likes >= 1000000) return (likes / 1000000).toFixed(1) + 'M';
@@ -46,7 +48,7 @@ const BlogPostCard=({content,author})=>{
             </h1>
 
             {/* Description */}
-            <p className=" hidden sm:block  text-sm tleading-relaxed text-gray-700 line-clamp-2 mb-3">
+            <p className=" sm:block  text-sm leading-relaxed text-gray-700 line-clamp-2 mb-3 sm:line-clamp-0" >
                 {des}
             </p>
             {/* Tags */}
@@ -66,10 +68,22 @@ const BlogPostCard=({content,author})=>{
             {/* Likes */}
              </div>
 
-        <span className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 mt-3 sm:mt-6">
-            <AiOutlineLike className="w-4 h-4 flex-shrink-0" />
+        <div className="flex items-center gap-5 sm:gap-3 text-xs sm:text-sm text-gray-500 mt-3 sm:mt-6">
+            <span className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 mt-3 sm:mt-6">
+            <AiOutlineLike className="w-4 h-4 flex-shrink-0 text-red-600" />
             <span className="font-medium">{formatLikes(total_likes)}</span>
         </span>
+        <span className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 mt-3 sm:mt-6">
+            <FaComment className="w-4 h-4 flex-shrink-0 text-blue-500" />
+            <span className="font-medium">{formatLikes(total_comments)}</span>
+        </span>
+        <span className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 mt-3 sm:mt-6">
+           <FaHeart className="w-4 h-4 flex-shrink-0 text-pink-600" />
+            <span className="font-medium">{formatLikes(total_reads)}</span>
+        </span>
+            
+        </div>        
+
                 
                 
        

@@ -42,7 +42,7 @@ const MinimalBlogPost = ({ content, author, index }) => {
                     
                     {/* Description - Hidden on very small screens */}
                     {des && (
-                        <p className="hidden xs:block sm:block text-gray-600 text-xs sm:text-sm line-clamp-1 sm:line-clamp-2">
+                        <p className=" xs:block sm:block text-gray-600 text-xs sm:text-sm line-clamp-2 sm:line-clamp-4 ">
                             {des}
                         </p>
                     )}

@@ -145,7 +145,7 @@ toFixed(1) + 'M';
                         <p className='text-gray-700'>{profileData.personal_info.bio || "No bio available"}</p>
 
                     </div>
-                    <div className='flex flex-wrap flex-col gap-4 mt-2'>
+                    <div className='flex flex-col gap-4 mt-2'>
                         <h2 className='text-lg font-semibold'>Social Links</h2>
                         <div className='flex flex-wrap gap-4'>
                             {Object.entries(profileData.social_links).map(([key, value]) => (

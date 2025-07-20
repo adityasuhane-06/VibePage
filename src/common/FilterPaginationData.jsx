@@ -28,7 +28,7 @@ export const FilterPaginationData = async ({create_new_state = false, state, dat
   else {
     // Create new state - fetch total docs count from server
     try {
-      const response = await axios.post(`http://localhost:3000/api/${countRoute}`, {
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_DOMAIN}/api/${countRoute}`, {
        ...data_to_send,
         page
       });

@@ -61,9 +61,9 @@ const BlogInterActions = () => {
         </button>
 </div>
 {
-    console.log("Blog author username:", blog.author.personal_info.userName, "Current user username:", user.data.user)
+    console.log("Blog author username:", blog.author.personal_info.userName, "Current user username:", user.user)
 }
-{        blog.author.personal_info.userName===user.data.user?.userName&& (
+{        blog.author.personal_info.userName===user.user?.userName&& (
     <Link to={`/editor/${blog._id}`} className='text-gray-950 hover:underline hover:text-blue-500 ml-auto'>
        <button className='text-gray-950 text-2xl hover:underline hover:text-blue-500'>Edit</button>
        </Link>

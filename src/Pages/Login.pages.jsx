@@ -24,8 +24,8 @@ const API_BASE_URL =  'https://server-vibepage.vercel.app';
         password: ''
     });
     const [showPassword, setShowPassword] = useState(false);
-    const {isLoading, error: reduxError} = useSelector(state => state.auth.data);
-    const {isLoggedIN} = useSelector(state => state.auth.data);
+    const {isLoading, error: reduxError} = useSelector(state => state.auth);
+    const {isLoggedIN} = useSelector(state => state.auth);
 
 
     const [error, setError] = useState('');

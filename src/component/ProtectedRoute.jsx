@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const ProtectedRoute = ({ children }) => {
-  const { isLoggedIN, accessToken } = useSelector((state) => state.auth.data);
+  const { isLoggedIN, accessToken } = useSelector((state) => state.auth);
   const location = useLocation();
 
   // Check if user is authenticated

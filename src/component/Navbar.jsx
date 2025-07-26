@@ -20,7 +20,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSignup, setIsSignup] = useState(false)
   const dispatch = useDispatch();
-  const { user, isLoggedIN } = useSelector((state) => state.auth.data);
+  const { user, isLoggedIN } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const handleSearch =async (e) => {

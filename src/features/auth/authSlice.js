@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState={
-    data:{
+    
     user:null,
     isLoggedIN:false,
     isLoading:false,
@@ -10,7 +10,7 @@ const initialState={
     accessToken:null,
     refreshToken:null
 
-}
+
 }
 
 const authSlice=createSlice({
@@ -18,32 +18,32 @@ const authSlice=createSlice({
     initialState,
     reducers:{
         loginStart:(state)=>{
-            state.data.isLoading=true;
-            state.data.error=null;
-            state.data.success=false;
+            state.isLoading=true;
+            state.error=null;
+            state.success=false;
         } ,
         loginSuccess:(state,action)=>{
-            state.data.isLoading=false;
-            state.data.user=action.payload.user;
-            state.data.accessToken=action.payload.accessToken;
-            state.data.refreshToken=action.payload.refreshToken;
-            state.data.isLoggedIN=true;
-            state.data.success=true;
-            state.data.error=null;
+            state.isLoading=false;
+            state.user=action.payload.user;
+            state.accessToken=action.payload.accessToken;
+            state.refreshToken=action.payload.refreshToken;
+            state.isLoggedIN=true;
+            state.success=true;
+            state.error=null;
         },
         loginFailure:(state,action)=>{
-            state.data.isLoading=false;
-            state.data.error=action.payload;
-            state.data.success=false;
+            state.isLoading=false;
+            state.error=action.payload;
+            state.success=false;
         },
         logOut:(state)=>{
-            state.data.isLoading=false;
-            state.data.user=null;
-            state.data.isLoggedIN=false;
-            state.data.accessToken=null;
-            state.data.refreshToken=null;
-            state.data.success=false;
-            state.data.error=null;
+            state.isLoading=false;
+            state.user=null;
+            state.isLoggedIN=false;
+            state.accessToken=null;
+            state.refreshToken=null;
+            state.success=false;
+            state.error=null;
 
         }
     }

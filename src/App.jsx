@@ -14,7 +14,7 @@ import BlogPage from './Pages/blog.page'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from './component/ProtectedRoute'
 function App() {
-  const {isLoggedIN, accessToken} = useSelector((state) => state.auth.data);
+  const {isLoggedIN, accessToken} = useSelector((state) => state.auth);
 
   return (
     <>

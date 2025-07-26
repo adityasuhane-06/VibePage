@@ -8,7 +8,7 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 const persistConfig = {
     key: 'auth',
     storage,
-    whitelist:['user', 'isLoggedIN', 'refreshToken'] // only persist the user data
+    whitelist:['auth']
 }
 
 const rootReducer=combineReducers({

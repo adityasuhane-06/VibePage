@@ -116,9 +116,7 @@ let detailedBlogDataStructure = {
                    {
                     blog.content[0].blocks.map((block, index) => (
                         <div className='my-4 md:my-8' key={index}>
-                            {
-                                console.log("Rendering block:", block, "at index:", index)
-                            }
+
                             <BlogContentBlock key={index} block={block} index={index} />
 
                         </div>

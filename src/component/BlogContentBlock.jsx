@@ -1,8 +1,7 @@
 import React from 'react'
 
 function BlogContentBlock({ block }) {
-  // Move console.log outside JSX
-  console.log("Rendering BlogContentBlock with data:", block);
+
 
   if (!block) {
     return <div>No content block data</div>;

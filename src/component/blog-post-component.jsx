@@ -1,9 +1,10 @@
 import { getDay } from "../common/day";
 import React from "react";
-import { AiOutlineLike } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import { FaComment } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
 const BlogPostCard=({content,author})=>{
     let {title,banner,des,tags,publishedAt,activity:{total_likes,total_comments,total_reads},blog_id:_id}=content;
     let {fullname,profile_img,userName}=author;
@@ -70,7 +71,7 @@ const BlogPostCard=({content,author})=>{
 
         <div className="flex items-center gap-5 sm:gap-3 text-xs sm:text-sm text-gray-500 mt-3 sm:mt-6">
             <span className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 mt-3 sm:mt-6">
-            <AiOutlineLike className="w-4 h-4 flex-shrink-0 text-red-600" />
+            <FaHeart className="w-4 h-4 flex-shrink-0 text-red-600" />
             <span className="font-medium">{formatLikes(total_likes)}</span>
         </span>
         <span className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 mt-3 sm:mt-6">
@@ -78,7 +79,7 @@ const BlogPostCard=({content,author})=>{
             <span className="font-medium">{formatLikes(total_comments)}</span>
         </span>
         <span className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 mt-3 sm:mt-6">
-           <FaHeart className="w-4 h-4 flex-shrink-0 text-pink-600" />
+            <FaEye className="w-4 h-4 flex-shrink-0 text-yellow-500" />
             <span className="font-medium">{formatLikes(total_reads)}</span>
         </span>
             

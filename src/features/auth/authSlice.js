@@ -7,8 +7,8 @@ const initialState={
     isLoading:false,
     error:null,
     success:false,
-    accessToken:localStorage.getItem("accessToken")?localStorage.getItem("accessToken"):null,
-    refreshToken:localStorage.getItem("refreshToken")?localStorage.getItem("refreshToken"):null,
+    accessToken:null,
+    refreshToken:null
 
 }
 }
@@ -26,8 +26,10 @@ const authSlice=createSlice({
             state.data.isLoading=false;
             state.data.user=action.payload.user;
             state.data.accessToken=action.payload.accessToken;
+            state.data.refreshToken=action.payload.refreshToken;
             state.data.isLoggedIN=true;
             state.data.success=true;
+            state.data.error=null;
         },
         loginFailure:(state,action)=>{
             state.data.isLoading=false;
@@ -42,7 +44,6 @@ const authSlice=createSlice({
             state.data.refreshToken=null;
             state.data.success=false;
             state.data.error=null;
-            localStorage.removeItem("accessToken");
 
         }
     }

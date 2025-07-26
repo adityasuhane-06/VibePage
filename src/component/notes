@@ -1,0 +1,17 @@
+   {/* here we write the renderBlock function under main compenent is based on the react and javascript principle 
+
+    1.Encapsulation: The function is defined within the component, allowing it to access props and state directly.
+
+    2. Organization of code:Keeps all the complex rendering logic separate from the main component structure
+
+    3. Access to component Scope : the inner function has access to the component's props and state, allowing it to use them directly without needing to pass them as arguments.
+
+    4. Direct JSX in return (messy)
+    5.External function (loses scope access)
+    6. Good for:
+
+Complex conditional rendering
+Multiple rendering paths
+When you need access to component scope
+Keeping main return statement clean
+*/}

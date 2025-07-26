@@ -43,7 +43,7 @@ const BlogInterActions = () => {
       <hr className='border-gray-300 my-2' />
       <div className='flex  gap-4 p-1   border-0'>
 
-     <div className='flex items-center gap-10 max-sm:gap-8 w-full'>
+     <div className='flex items-center gap-10 max-sm:gap-5 w-full'>
         <button 
         onClick={handleLike}>
             {isLike?<FaHeart className='text-red-500 w-12 h-6 max-sm:h-7' />:<CiHeart className='w-12 h-6 max-sm:h-7' />} {handleDate(blog.activity.total_likes)}
@@ -65,7 +65,7 @@ const BlogInterActions = () => {
 }
 {        blog.author.personal_info.userName===user.data.user?.userName&& (
     <Link to={`/editor/${blog._id}`} className='text-gray-950 hover:underline hover:text-blue-500 ml-auto'>
-       <button className='text-gray-950 hover:underline hover:text-blue-500'>Edit</button>
+       <button className='text-gray-950 text-2xl hover:underline hover:text-blue-500'>Edit</button>
        </Link>
         )}
         

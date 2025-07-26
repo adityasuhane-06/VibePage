@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children }) => {
   const location = useLocation();
 
   // Check if user is authenticated
-  if (!isLoggedIN || !accessToken) {
+  if (!isLoggedIN ) {
     // Redirect to login page with return url
     return <Navigate to="/login" state={{ from: location }} replace />;
   }

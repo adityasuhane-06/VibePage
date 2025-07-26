@@ -135,7 +135,7 @@ else{
                 {/* Dropdown Menu */}
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
-                    {!accessToken && (
+                    {!isLoggedIN && (
                       <button
                         className="w-full px-4 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-indigo-600 transition-colors duration-200"
                         onClick={() => {
@@ -146,7 +146,7 @@ else{
                         Log In
                       </button>
                     )}
-                    {accessToken && (
+                    {isLoggedIN && (
                       <button
                         className="w-full px-4 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-indigo-600 transition-colors duration-200"
                         onClick={() => {

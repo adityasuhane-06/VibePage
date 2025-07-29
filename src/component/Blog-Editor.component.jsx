@@ -1,5 +1,5 @@
-import React, { useState,useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState,useEffect, useRef, use } from 'react'
+import { Link,useParams } from 'react-router-dom'
 import logo from '../assets/logo1.png'
 import AnimationWrapper from '../common/page-animation'
 import banner from '../assets/banner.webp'
@@ -11,22 +11,24 @@ import {Tools,initializeEditorPlugins } from './tools.component'
 import { useDispatch ,useSelector} from 'react-redux'
 import { setTitle,setAuthor,setBanner,setContent,setDes,setTags } from '../features/Blog/blog'
 import { TypingAnimation } from "../components/magicui/typing-animation";
-const BlogEditor = ({editorSate,setEditorState}) => {
+const BlogEditor = ({editorSate,setEditorState,data}) => {
   const screenWidth = window.screen.width;
   const screenHeight = window.screen.height;
   const dispatch=useDispatch();
   const blog = useSelector((state)=>state.blog);
   const editorRef = useRef(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
-
+  console.log("Editor ",data);
+let {blog_id} = useParams();
   useEffect(() => {
     let editor = null;
+    
     
     const initEditor = async () => {
       try {
         editor = new EditorJS({
           holder: 'textEditor',
-          data: blog.content,
+          data:data?.content?data.content[0]: blog.content,
           tools: Tools,
           placeholder: 'Let\'s write an awesome story!',
           autofocus: true,
@@ -167,6 +169,15 @@ const BlogEditor = ({editorSate,setEditorState}) => {
   const SaveDraft = async (e) => {
     
   }
+  if(data&&blog.content.length === 0){
+
+    dispatch(setTitle(data.title));
+    dispatch(setAuthor(data.author));
+    dispatch(setBanner(data.banner));
+    dispatch(setContent(data.content));
+    dispatch(setDes(data.description));
+    dispatch(setTags(data.tags));
+  }
 
 const buttonStyle ="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br font-medium rounded-4xl text-sm px-5.5 py-2.5 text-center me-2 mb-2";
   return (
@@ -191,7 +202,7 @@ const buttonStyle ="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-bl
         <div className='relative aspect-video   bg-white border-2 border-gray-300 rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-200 opacity-80'>
           <label htmlFor='uploadBanner' className='absolute inset-0 flex items-center justify-center cursor-pointer'>
             <img
-        
+           
             src={blog.banner ? blog.banner : banner}
             alt="banner"  
             className='w-full h-full object-fill rounded-lg z-20' 

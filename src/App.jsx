@@ -33,6 +33,8 @@ function App() {
         <ProfilePage/>
         </ProtectedRoute>
         } />
+
+
       <Route path="user/:id" element={
         <ProtectedRoute>
           <ProfilePage />
@@ -44,6 +46,14 @@ function App() {
         <BlogPage/>
         </ProtectedRoute>
         } />
+
+        <Route path='/editor/:blog_id' element={
+          <ProtectedRoute>
+          <Editor/>
+          </ProtectedRoute>
+        } />
+        
+
       <Route path='*' element={<PageNotFound />} />
       </Route>
       

@@ -6,16 +6,17 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { setTitle, setAuthor, setBanner, setContent, setDes, setTags } from '../features/Blog/blog'
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,useParams } from 'react-router-dom'
 import axios from 'axios'
 import Tag from './tag'
 
 const PublishForm = ({ editorState, setEditorState }) => {
   let navigate = useNavigate()
   const blog = useSelector((state) => state.blog)
-  const User= useSelector((state) => state.auth.data.user)
+  const User= useSelector((state) => state.auth.user)
   const dispatch = useDispatch()
   const [tagInput, setTagInput] = useState('')
+  let {blog_id} = useParams();
 
   useEffect(() => {
     const navbar = document.querySelector('.navbar')
@@ -97,9 +98,10 @@ const PublishForm = ({ editorState, setEditorState }) => {
       draft: false,
 
     }
+    console.log("Blog object to be sent:", blogObject);
 
     let token= localStorage.getItem('accessToken');
-    axios.post("http://localhost:3000/api/create-blog",blogObject,{
+    axios.post("http://localhost:3000/api/create-blog",{...blogObject,id:blog_id},{
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

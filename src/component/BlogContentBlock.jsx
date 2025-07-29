@@ -15,6 +15,7 @@ function BlogContentBlock({ block }) {
           <p 
             className="text-gray-800 leading-relaxed mb-4"
             dangerouslySetInnerHTML={{ __html: block.data.text }}
+            // this is way to render HTML content safely
           />
         );
       
@@ -76,6 +77,7 @@ function BlogContentBlock({ block }) {
             )}
           </figure>
         );
+
         case 'image':
         return (
           <figure className="mb-6">

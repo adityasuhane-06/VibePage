@@ -1,5 +1,5 @@
 
-### 🚀 Vibe Page – Medium Clone (Full-Stack Web App) | [GitHub](https://github.com/adityasuhane-06/server) *(March 2025)*
+### 🚀 Vibe Page – Medium Clone (Full-Stack Web App) | [GitHub](https://github.com/adityasuhane-06/server) 
 
 A full-stack blogging platform inspired by **Medium**, built with the **MERN stack** and fully deployed on **Vercel** using a monorepo setup.
 
